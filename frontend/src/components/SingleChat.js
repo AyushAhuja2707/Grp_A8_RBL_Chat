@@ -1,4 +1,10 @@
 import { ArrowBackIcon } from '@chakra-ui/icons';
+import {
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+} from '@chakra-ui/react'
 import { Box, FormControl, IconButton, Input, Spinner, Text, useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
@@ -11,9 +17,11 @@ import io from "socket.io-client";
 import "./styles.css"
 import Lottie  from "lottie-react"
 import animationData from "../animations/4600-typing-status.json"
+import {Filter} from 'profanity-check'
 const ENDPOINT = "http://localhost:5000"; // "https://talk-a-tive.herokuapp.com"; -> After deployment
 var socket, selectedChatCompare;
 
+const defaultFilter = new Filter()
 
 const SingleChat = ({fetchAgain,setFetchAgain}) => {
      const { selectedChat, setSelectedChat, user, notification, setNotification } =ChatState();
@@ -23,6 +31,7 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
   const [socketConnected, setSocketConnected] = useState(false);
   const [typing, setTyping] = useState(false);
   const [istyping, setIsTyping] = useState(false);
+
   const toast = useToast();
 
   const defaultOptions = {
@@ -49,7 +58,7 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
 
    useEffect(() => {
     fetchMessages();
-    console.log("Help")
+    // console.log("Help")
     selectedChatCompare = selectedChat;
     // eslint-disable-next-line
   }, [selectedChat]);
@@ -127,6 +136,24 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
   };
   const sendMessage = async (event) => {
     if (event.key === "Enter" && newMessage) {
+      //API ok
+      console.log(newMessage)
+      console.log(defaultFilter.isProfane(newMessage));
+       if(defaultFilter.isProfane(newMessage) == true){
+        // alert("wrong message");
+        
+         toast({
+        title: "Bad Word !",
+        description: "Plz do not send bad words",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+          return;
+        }
+      
+
       socket.emit("stop typing", selectedChat._id);
       try {
         const config = {
@@ -136,6 +163,7 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
           },
         };
         setNewMessage("");
+       
         const { data } = await axios.post(
           "/api/message",
           {
@@ -144,7 +172,8 @@ const SingleChat = ({fetchAgain,setFetchAgain}) => {
           },
           config
         );
-        // console.log(data)
+        
+        console.log(data)
         socket.emit("new message", data);
         setMessages([...messages, data]);
       } catch (error) {

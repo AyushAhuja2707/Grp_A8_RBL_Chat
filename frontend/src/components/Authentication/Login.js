@@ -23,7 +23,7 @@ const [show, setShow] = useState(false);
   // const navigate = useNavigate();
   
   const submitHandler = async() => {
-    console.log("aala")
+    // console.log("aala")
     setLoading(true);
     if (!email || !password) {
       toast({
@@ -121,8 +121,8 @@ const [show, setShow] = useState(false);
         colorScheme="red"
         width="100%"
         onClick={() => {
-          setEmail("gautam@gmail.com");
-          setPassword("123456");
+          setEmail("image@gmail.com");
+          setPassword("image");
         }}
       >
         Get Guest User Credentials

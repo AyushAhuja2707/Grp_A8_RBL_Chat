@@ -1,8 +1,13 @@
+
+
+// import {Filter} from 'profanity-check'
+
 const asyncHandler = require("express-async-handler");
 const Message = require("../models/messageModel");
 const User = require("../models/userModel");
 const Chat = require("../models/chatModel");
 
+// const defaultFilter = new Filter()
 //@description     Get all Messages
 //@route           GET /api/Message/:chatId
 //@access          Protected
@@ -35,7 +40,13 @@ const sendMessage = asyncHandler(async (req, res) => {
     chat: chatId,
   };
 
+  // console.log("AALA")
+  // console.log(newMessage.content)
+  
+
   try {
+    // model
+
     var message = await Message.create(newMessage);
 
     message = await message.populate("sender", "name pic");

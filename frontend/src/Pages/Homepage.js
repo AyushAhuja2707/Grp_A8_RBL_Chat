@@ -23,18 +23,19 @@ const Homepage = () => {
       d="flex"
       justifyContent = 'center'
       p = {3}
-      bg = {"white"}
+      bg = {"red.100"}
       w = "100%"
       m = "40px 0 15px 0"
       borderRadius="1g"
       borderWidth="1px"
+
       >
         <Text fontSize="4xl"
         align="center"
         fontFamily="Work sans"
         color = "black"> PRO-TALK</Text>
       </Box>
-      <Box bg="white" w="100%" p={4} borderRadius="lg" borderWidth="1px">
+      <Box bg = {"red.100"} w="100%" p={4} borderRadius="lg" borderWidth="1px">
          <Tabs isFitted variant="soft-rounded">
           <TabList mb="1em">
             <Tab>Login</Tab>
